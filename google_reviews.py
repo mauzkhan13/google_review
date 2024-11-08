@@ -46,13 +46,11 @@ class GoogleReviewsScraper:
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-gpu')
         options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-logging')
-        options.add_argument('--enable-automation')
         options.add_argument('--log-level=3')
         options.add_argument('--v=99')
         options.add_argument('--headless')
         options.binary_location = '/usr/bin/google-chrome'
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()>
         # self.driver = uc.Chrome(driver_executable_path=self.chromedriver_path, options=options)
 
         self.driver.maximize_window()
