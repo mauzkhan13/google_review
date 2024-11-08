@@ -19,7 +19,9 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
 class GoogleReviewsScraper:
+    # def __init__(self, chromedriver_path, input_file_path, output_file_path):
     def __init__(self, input_file_path, output_file_path):
+        # self.chromedriver_path = chromedriver_path
         self.input_file_path = input_file_path
         self.output_file_path = output_file_path
         self.driver = None
@@ -40,17 +42,21 @@ class GoogleReviewsScraper:
         }
 
     def setup_driver(self):
-        options = Options()
+        options = uc.ChromeOptions()
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-gpu')
         options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-logging')
+        options.add_argument('--enable-automation')
         options.add_argument('--log-level=3')
         options.add_argument('--v=99')
         options.add_argument('--headless')
         options.binary_location = '/usr/bin/google-chrome'
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()>
-        self.driver.maximize_window()                                        
-        # self.wait = WebDriverWait(self.driver, 5)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        # self.driver = uc.Chrome(driver_executable_path=self.chromedriver_path, options=options)
+
+        self.driver.maximize_window()
+        self.wait = WebDriverWait(self.driver, 5)
         self.wait_short = WebDriverWait(self.driver, 1)
 
     def parse_date(self, date_text):
@@ -81,8 +87,7 @@ class GoogleReviewsScraper:
         previous_review_count = 0
         max_attempts = 50
         attempts = 0
-        wait = WebDriverWait(self.driver, 5)
-        wait_short = WebDriverWait(self.driver, 1)
+
         while attempts < max_attempts:
             try:
                 body_texts = self.wait.until(EC.visibility_of_all_elements_located(
@@ -126,8 +131,7 @@ class GoogleReviewsScraper:
 
     def extract_review_data(self, location_data):
         reviews_data = []
-        wait = WebDriverWait(self.driver, 5)
-        wait_short = WebDriverWait(self.driver, 1)
+        
         html_content = self.driver.page_source
         soup = BeautifulSoup(html_content, 'html.parser')
         card_elements = soup.select('div.WMbnJf.vY6njf.gws-localreviews__google-review')
@@ -170,8 +174,7 @@ class GoogleReviewsScraper:
             cohort_, out_of_value, comments_time, rating_value = [], [], [], []
             years, total_reviews, address_, reviews_texts = [], [], [], []
             googleId_, googleLinks_, ones_, metro_ = [], [], [], []
-            wait = WebDriverWait(self.driver, 5)
-            wait_short = WebDriverWait(self.driver, 1)
+
             for _, row in df_input.iterrows():
                 self.driver.get(row['Link'])
 
