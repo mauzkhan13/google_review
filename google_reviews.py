@@ -51,7 +51,7 @@ class GoogleReviewsScraper:
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()>
         self.driver.maximize_window()                                        
         # self.wait = WebDriverWait(self.driver, 5)
-        # self.wait_short = WebDriverWait(self.driver, 1)
+        self.wait_short = WebDriverWait(self.driver, 1)
 
     def parse_date(self, date_text):
         specific_date = None
