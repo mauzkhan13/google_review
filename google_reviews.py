@@ -19,9 +19,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 
 class GoogleReviewsScraper:
-    # def __init__(self, chromedriver_path, input_file_path, output_file_path):
     def __init__(self, input_file_path, output_file_path):
-        # self.chromedriver_path = chromedriver_path
         self.input_file_path = input_file_path
         self.output_file_path = output_file_path
         self.driver = None
@@ -51,9 +49,7 @@ class GoogleReviewsScraper:
         options.add_argument('--headless')
         options.binary_location = '/usr/bin/google-chrome'
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()>
-        # self.driver = uc.Chrome(driver_executable_path=self.chromedriver_path, options=options)
-
-        self.driver.maximize_window()
+        self.driver.maximize_window()                                        
         self.wait = WebDriverWait(self.driver, 5)
         self.wait_short = WebDriverWait(self.driver, 1)
 
